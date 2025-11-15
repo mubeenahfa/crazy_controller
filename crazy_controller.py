@@ -66,6 +66,7 @@ class CrazyController:
 
 
 
+
 # --- Main script execution ---
 if __name__ == "__main__":
     
@@ -108,7 +109,7 @@ if __name__ == "__main__":
     rewards = []
 
     print(f"--- Starting simulation loop (500 steps) ---")
-    for i in range(500):
+    for i in range(100):
         
         terminated = truncated = False
         current_month = info['month']
@@ -134,3 +135,59 @@ if __name__ == "__main__":
 
     env.close()
     print("--- Controller Script Finished ---")
+
+    # ========================================================================================================
+    # This is how we recommend you to go about training with each episode lasting a year and multiple episodes 
+    # ========================================================================================================
+    #def optimize_model():
+    #
+    #This is a dummy function to show you that you will need to implement something similiar.
+    #In a real RL agent, this is where you would sample a batch from the replay buffer and
+    #perform a gradient descent step.
+    #   print("--- (Optimizing model...) ---") # Uncomment to see when it's called
+    #   pass # Does nothing as expected
+    #
+    # NUM_EPISODES = 3 # you would set how many full-year episodes you want to run
+    # train_interval = 100 # Call optimize_model() every n steps to run gradient descent
+    
+    # --- Calculate steps for one year ---
+    # This environment runs at 12 steps/hour (5-minute timesteps)
+    # So, one year is: 12 steps/hour * 24 hours/day * 365 days = 105,120 steps
+    #
+    # ONE_YEAR_IN_STEPS = 105120 # Re-verify your timestep calculations by running the print statements above.
+    
+    # OUTER LOOP FOR EPISODES:
+    # for episode in range(NUM_EPISODES):
+    #     print(f"--- STARTING EPISODE {episode + 1}/{NUM_EPISODES} ---")
+    #     rewards = []
+    #     
+    #     # INNER LOOP FOR STEPS WITHIN ONE YEAR:
+    #     for step in range(ONE_YEAR_IN_STEPS):
+    #         action = controller.act(observation)
+    #         observation, reward, terminated, truncated, info = env.step(action)
+    #         rewards.append(reward)
+    #
+    #         # In a real RL agent, you'd store the transition in a replay buffer here
+    #         # and then optimize every N steps.
+    #         if (step + 1) % train_interval == 0:
+    #             optimize_model() # Calling the dummy optimizer
+    #          
+    #         if observation is not None:
+    #             observation = np.array(observation, dtype=np.float32)
+    #
+    #         if (step + 1) % 1000 == 0: # its not smart to print after every timestep 
+    #              print(f"  Step {step + 1}/{ONE_YEAR_IN_STEPS}...")
+    #
+    #         if terminated or truncated:
+    #             print(f"--- Episode finished early at step {step + 1}, resetting... ---")
+    #             observation, info = env.reset()
+    #             observation = np.array(observation, dtype=np.float32)
+    #             # When an episode ends early, we break the inner loop
+    #             # and start a new episode.
+    #             break 
+    #
+    #     # Print stats at the end of each full-year episode
+    #     print(f"\n--- EPISODE {episode + 1} FINISHED ---")
+    #     print(f"Episode Mean reward: {np.mean(rewards):.4f}")
+    #     print(f"Episode Cumulative reward: {sum(rewards):.2f}")
+    #     print("--------------------------\n")
